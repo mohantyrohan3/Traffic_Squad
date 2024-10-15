@@ -4,6 +4,8 @@ const User = require('../models/User');
 const passport = require('../config/passport');
 const bcrypt = require('bcrypt');
 const selectDatabase = require('../middleware/userRole.js');
+const Police = require("../models/PoliceDb.js");
+const AdminDB = require("../models/AdminDb.js");
 
 
 
@@ -14,7 +16,29 @@ router.get('/',(req,res)=>{
 });
 
 
-router.post('/register',async (req,res)=>{
+router.post('/register_admin',async (req,res)=>{
+    try{
+        const {email,password} = req.body;
+        const hashedpassword = await bcrypt.hash(password,10);
+        const user = new AdminDB({
+            email,
+            password:hashedpassword
+        });
+        await user.save();
+        res.send({
+            "message":"User Registered Successfully",
+            "user":user
+        });
+    }
+    catch(err){
+        res.send({
+            "message":err.message
+        });
+    }
+});
+
+
+router.post('/register_user',async (req,res)=>{
     try{
         const {email,password,dlnumber} = req.body;
         const hashedpassword = await bcrypt.hash(password,10);
@@ -36,6 +60,62 @@ router.post('/register',async (req,res)=>{
     }
 });
 
+
+router.post('/register_police',async (req,res)=>{
+    if(!req.isAuthenticated()  && req.usertype !== "Admin"){
+        return res.status(401).send({
+            "message":"Unauthorized Access"
+
+        });
+    }
+    try{
+        const {email,password,jobid,station,name,phoneno,address} = req.body;
+        const hashedpassword = await bcrypt.hash(password,10);
+        const user = new Police({
+            email,
+            password:hashedpassword,
+            jobid,
+            station,
+            name:name,
+            phoneno,
+            address
+        });
+        await user.save();
+        res.send({
+            "message":"User Registered Successfully",
+            "user":user
+        });
+    }
+    catch(err){
+        res.send({
+            "message":err.message
+        });
+    }
+});
+
+
+
+router.get('/police_id',async (req,res)=>{
+    if(!req.isAuthenticated()  && req.usertype == "User" && req.usertype == "Admin"){
+        return res.status(401).send({
+            "message":"Unauthorized Access"
+
+        });
+    }
+
+    try{
+        const user = await Police.find({_id : req.user.id});
+        res.send({
+            "message":"User Details",
+            "user":user
+        });
+    }
+    catch(err){
+        res.send({
+            "message":err.message
+        });
+    }
+});
 
 router.post('/login', selectDatabase,
     passport.authenticate('user', { failureRedirect: '/auth/faillogin' }),

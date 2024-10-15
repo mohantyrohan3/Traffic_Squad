@@ -11,9 +11,7 @@ passport.use('user',new LocalStrategy({
   },
   async function (req , email, password, done) {
       try{
-        console.log("Started");
         var db = req.usertype;
-        console.log("DB Status  " + db);
         switch (db) {
             case "User":
                  db = require('../models/User');
@@ -34,7 +32,7 @@ passport.use('user',new LocalStrategy({
   
         if (!user) { return done(null, false); }
         if (! await compare(password , user.password)) { return done(null, false); }
-        
+        user['usertype'] = req.usertype;
         return done(null, user);
       }
   
@@ -42,7 +40,7 @@ passport.use('user',new LocalStrategy({
          return done(err);
       }
       }
-    ));
+));
 
 
 

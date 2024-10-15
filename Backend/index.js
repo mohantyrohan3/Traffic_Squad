@@ -39,6 +39,7 @@ app.get('/',(req,res)=>{
 });
 
 app.use('/auth',require('./routes/auth'));
+app.use('/challan',require('./routes/challan'));
 
 app.listen(8000, () => {
     console.log('Server is running on port 3000');

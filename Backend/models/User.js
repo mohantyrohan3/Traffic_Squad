@@ -13,7 +13,8 @@ const UserDb = new mongoose.Schema({
     },
     dlnumber:{
         type:String,
-        required:true
+        required:true,
+        unique:true
     }
 });
 
