@@ -3,6 +3,7 @@ const  router = require('express').Router();
 const User = require('../models/User');
 const passport = require('../config/passport');
 const bcrypt = require('bcrypt');
+const selectDatabase = require('../middleware/userRole.js');
 
 
 
@@ -36,7 +37,7 @@ router.post('/register',async (req,res)=>{
 });
 
 
-router.post('/login', 
+router.post('/login', selectDatabase,
     passport.authenticate('user', { failureRedirect: '/auth/faillogin' }),
     function(req, res) {
         res.send({
