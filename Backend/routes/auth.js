@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt');
 const selectDatabase = require('../middleware/userRole.js');
 const Police = require("../models/PoliceDb.js");
 const AdminDB = require("../models/AdminDb.js");
+const mailService = require('../middleware/mailService.js');
 
 
 
@@ -62,7 +63,8 @@ router.post('/register_user',async (req,res)=>{
 
 
 router.post('/register_police',async (req,res)=>{
-    if(!req.isAuthenticated()  && req.usertype !== "Admin"){
+    
+    if(req.isAuthenticated() ==  false  || req.user.usertype != "Admin"){
         return res.status(401).send({
             "message":"Unauthorized Access"
 
@@ -81,6 +83,9 @@ router.post('/register_police',async (req,res)=>{
             address
         });
         await user.save();
+
+        const mailResponse = await mailService(email,password);
+
         res.send({
             "message":"User Registered Successfully",
             "user":user
@@ -96,7 +101,7 @@ router.post('/register_police',async (req,res)=>{
 
 
 router.get('/police_id',async (req,res)=>{
-    if(!req.isAuthenticated()  && req.usertype == "User" && req.usertype == "Admin"){
+    if(req.isAuthenticated() == false  || req.user.usertype == "User" || req.user.usertype == "Admin"){
         return res.status(401).send({
             "message":"Unauthorized Access"
 

@@ -12,7 +12,7 @@ router.get('/',(req,res)=>{
 
 
 router.post('/register_challan',async (req,res)=>{
-    if(!req.isAuthenticated()  && req.usertype != "Police"){
+    if(req.isAuthenticated() == false  ||  req.user.usertype != "Police"){
         return res.status(401).send({
             "message":"Unauthorized Access"
 
@@ -49,7 +49,7 @@ router.post('/register_challan',async (req,res)=>{
 
 router.get('/get_challan',async (req,res)=>{
     const dl_params = req.query.dl_no;
-    if(!req.isAuthenticated()){
+    if(req.isAuthenticated() == false){
         return res.status(401).send({
             "message":"Unauthorized Access"
         });
