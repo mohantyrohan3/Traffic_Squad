@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+import e from 'express';
+import mongoose from 'mongoose';
 
 
 const PoliceDB = new mongoose.Schema({
@@ -35,4 +36,4 @@ const PoliceDB = new mongoose.Schema({
 
 
 const Police = mongoose.model('Police',PoliceDB);
-module.exports = Police;
+export default Police;

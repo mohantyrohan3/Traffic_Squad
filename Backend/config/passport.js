@@ -1,7 +1,9 @@
-const passport = require('passport');
-const LocalStrategy = require('passport-local');
-const {compare} = require('bcrypt');
-const User = require('../models/User');
+import passport from 'passport';
+import {compare} from 'bcrypt';
+import LocalStrategy from 'passport-local';
+import User from '../models/User.js';
+import Police from '../models/PoliceDb.js';
+import Admin from '../models/AdminDb.js';
 
 
 
@@ -14,13 +16,13 @@ passport.use('user',new LocalStrategy({
         var db = req.usertype;
         switch (db) {
             case "User":
-                 db = require('../models/User');
+                 db = User;
                 break;
             case "Police":
-                 db = require('../models/PoliceDb');
+                 db = Police;
                 break;
             case "Admin":
-                 db = require('../models/AdminDb');
+                 db = Admin;
                 break;
             default:
                 return done(null, false);
@@ -57,4 +59,4 @@ passport.use('user',new LocalStrategy({
       });
 
 
-module.exports = passport;
+export default passport;

@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+import e from 'express';
+import mongoose from 'mongoose';
 
 
 const ChallanDB = new mongoose.Schema({
@@ -23,4 +24,4 @@ const ChallanDB = new mongoose.Schema({
 
 
 const Challan = mongoose.model('Challan',ChallanDB);
-module.exports = Challan;
+export default Challan;

@@ -1,4 +1,4 @@
-const nodemailer = require("nodemailer");
+import nodemailer from 'nodemailer';
 const APP_EMAIL = process.env.APP_EMAIL;
 const APP_PASSWORD = process.env.APP_PASSWORD;
 
@@ -31,4 +31,4 @@ const mailService = async (email , password)=>{
 }
 
 
-module.exports = mailService;
+export default mailService;

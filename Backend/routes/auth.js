@@ -1,12 +1,12 @@
-const express = require('express');
-const  router = require('express').Router();
-const User = require('../models/User');
-const passport = require('../config/passport');
-const bcrypt = require('bcrypt');
-const selectDatabase = require('../middleware/userRole.js');
-const Police = require("../models/PoliceDb.js");
-const AdminDB = require("../models/AdminDb.js");
-const mailService = require('../middleware/mailService.js');
+import express from 'express';
+const router = express.Router();
+import User from '../models/User.js';
+import passport from '../config/passport.js';
+import bcrypt from 'bcrypt';
+import selectDatabase from '../middleware/userRole.js';
+import Police from "../models/PoliceDb.js";
+import AdminDB from "../models/AdminDb.js";
+import mailService from '../middleware/mailService.js';
 
 
 
@@ -181,5 +181,4 @@ router.get('/logout',(req,res)=>{
     });
 });
 
-
-module.exports = router;
+export default router;

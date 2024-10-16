@@ -1,6 +1,16 @@
-const router = require('express').Router();
-const Challan = require('../models/Challan');
-const User = require('../models/User');
+import express from 'express';
+const router = express.Router();
+import Challan from '../models/Challan.js';
+import User from '../models/User.js';
+import multer from 'multer';
+import app from '../config/firebase.js';
+import {getStorage,ref,uploadBytes,getDownloadURL , uploadBytesResumable} from 'firebase/storage';
+
+
+const storage = getStorage();
+const mstorage = multer.memoryStorage();
+const upload = multer({ storage: mstorage });
+
 
 
 router.get('/',(req,res)=>{
@@ -11,7 +21,8 @@ router.get('/',(req,res)=>{
 
 
 
-router.post('/register_challan',async (req,res)=>{
+router.post('/register_challan',upload.single('file'), async (req,res)=>{
+    
     if(req.isAuthenticated() == false  ||  req.user.usertype != "Police"){
         return res.status(401).send({
             "message":"Unauthorized Access"
@@ -26,13 +37,25 @@ router.post('/register_challan',async (req,res)=>{
                 "message":"User Not Found"
               });
         }
-    
+
+        
         const challan = new Challan({
             police_id:req.user.id,
             user_id:user._id,
             vehicle_no,
         });
+        
+        const storageRef = ref(storage, `challan/${user._id}/${challan._id}/${req.file.originalname}`);
+        const metadata = {
+            contentType: req.file.mimetype,
+        };
+
+        const snapshot = await uploadBytesResumable(storageRef, req.file.buffer, metadata);
+        const downloadURL = await getDownloadURL(snapshot.ref);
+
+        challan.image.push(downloadURL);
         await challan.save();
+
         res.send({
             "message":"Challan Registered Successfully",
             "challan":challan
@@ -44,6 +67,8 @@ router.post('/register_challan',async (req,res)=>{
         });
     }
 });
+
+
 
 
 
@@ -76,4 +101,4 @@ router.get('/get_challan',async (req,res)=>{
 });
 
 
-module.exports = router;
+export default router;

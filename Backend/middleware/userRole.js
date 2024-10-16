@@ -1,6 +1,5 @@
 function selectDatabase(req, res, next) {
     const usertype = req.body.userType;
-    console.log(usertype);
     switch (usertype) {
         case "user":
             req.usertype = "User";
@@ -17,4 +16,4 @@ function selectDatabase(req, res, next) {
     next();
 }
 
-module.exports = selectDatabase;
+export default selectDatabase;
