@@ -2,7 +2,7 @@ import { View, SafeAreaView, StyleSheet, TextInput,ScrollView } from 'react-nati
 import React, { useState } from 'react'
 import { Text , Button} from 'react-native-paper';
 
-export default function Login() {
+export default function Login({navigation}) {
     const [email , setemail]=useState('');
     const [password , setpassword]=useState('');
 
@@ -60,7 +60,7 @@ export default function Login() {
                             width:'70%',
                             marginBottom:10,
                         }
-                    } onPress={()=>console.log('Handle')}>
+                    } onPress={()=>navigation.navigate('Register')}>
                         Sign Up
                     </Button>
                     </View>

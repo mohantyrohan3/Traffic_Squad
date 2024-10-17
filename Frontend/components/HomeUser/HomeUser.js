@@ -1,22 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, SafeAreaView, Text } from 'react-native';
 import HomeCard from './HomeCard';
 import { Button,Card} from 'react-native-paper';
 import AddVehicle from './AddVehicle';
+import Loading from '../Loading/Loading';
 
 const HomeUser = () => {
     const [showModal , setShowModal] = useState(false);
+    const [loading , setLoading] = useState(true);
+    useEffect(() => {
+        setTimeout(() => {
+            setLoading(false);
+        }, 1500);
+    });
     return (
+        <>
+            {loading ? <Loading /> :
         <SafeAreaView style={{ flex: 1 }}>
 
 
             <AddVehicle show = {showModal} onDismiss={() => setShowModal(false)} />
-
-
             <View style={styles.container}>
-
-
-
                 <View style={{ flexDirection: 'row', justifyContent: "space-between", marginTop: 60, marginBottom: 30, marginLeft: 10 }}>
                     <Text variant="headlineSmall" style={{
                         textAlign: 'left', color: "black", fontFamily: 'Manrope',
@@ -58,6 +62,8 @@ const HomeUser = () => {
 
 
         </SafeAreaView>
+         }
+        </>
     );
 }
 

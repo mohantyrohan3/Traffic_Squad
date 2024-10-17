@@ -9,16 +9,16 @@ import DocumentPicker, {
     types,
   } from 'react-native-document-picker'
 
-const AddVehicle = (props) => {
+const AddChallan = (props) => {
     const [vehicle_no, setvehicleno] = useState('');
-    const [owner, setowner] = useState('');
+    const [dl_no, setdlno] = useState('');
     const [image, setimage] = useState({});
 
     const handleNewVehicle = () => {
-        console.log("DL Number: ", vehicle_no);
-        console.log("Owner Name: ", owner);
+        console.log("Vehicle Number: ", vehicle_no);
+        console.log("DL Number: ", dl_no);
         setvehicleno('');
-        setowner('');
+        setdlno('');
         setimage({});
         props.onDismiss();
     }
@@ -48,7 +48,7 @@ const AddVehicle = (props) => {
                 <Modal visible={props.show} onDismiss={props.onDismiss} contentContainerStyle={styles.containerStyle}>
 
                     <View style={{ alignItems: 'center' }}>
-                        <Text variant="headlineSmall" style={{ textAlign: 'center', color: "black", fontFamily: 'Manrope', fontWeight: 'bold', width: '90%', fontSize: 20 }}>ADD VEHICLE DETAILS</Text>
+                        <Text variant="headlineSmall" style={{ textAlign: 'center', color: "black", fontFamily: 'Manrope', fontWeight: 'bold', width: '90%', fontSize: 20 }}>ADD CHALLAN DETAILS</Text>
                     </View>
 
                     <View>
@@ -62,9 +62,9 @@ const AddVehicle = (props) => {
                         />
 
                         <TextInput
-                            placeholder="Owner Name"
-                            value={owner}
-                            onChangeText={setowner}
+                            placeholder="DL Number --- DL 33 XXX"
+                            value={dl_no}
+                            onChangeText={setdlno}
                             placeholderTextColor={'#4F7396'}
                             style={styles.input}
                         />
@@ -79,7 +79,7 @@ const AddVehicle = (props) => {
 
                         <View style={{ alignItems: 'center', marginTop: 10 }}>
                             <Button mode="contained" loading={false} dark style={styles.button} onPress={handleNewVehicle}>
-                                Add Vehicle
+                                Add Challan
                             </Button>
                         </View>
 
@@ -105,4 +105,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default AddVehicle;
+export default AddChallan;
