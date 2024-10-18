@@ -6,6 +6,7 @@ import { BottomNavigation, Text } from 'react-native-paper';
 import Challans from '../components/Challans/Challans';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Logout from '../components/Logout/Logout';
 
 // import { LogBox } from 'react-native';
 
@@ -43,7 +44,7 @@ const UserHomeRoute = ({ navigation }) => {
                     tabBarLabelStyle: { fontSize: 15, fontFamily: 'Manrope' },
                 }} />
 
-                <Tab.Screen name="Logout" component={Challans} options={{
+                <Tab.Screen name="Logout" component={Logout} options={{
                     headerShown: false,
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="logout" color={color} size={size} />

@@ -8,6 +8,18 @@
     {
       "path": "assets/fonts/Montserrat.ttf",
       "sha1": "debd10e57fb07dd24187c41679885129449c1435"
+    },
+    {
+      "path": "assets/fonts/RobotoSlab-Black.ttf",
+      "sha1": "f3b1bdd1676dff204f659634c1a29c109cbc238a"
+    },
+    {
+      "path": "assets/fonts/RobotoSlab-Bold.ttf",
+      "sha1": "e1e5ce44825aa846d38fb41a33cfc070acfd00f5"
+    },
+    {
+      "path": "assets/fonts/RobotoSlab-ExtraBold.ttf",
+      "sha1": "925e7a6676465c203874bd04020338a664967c8a"
     }
   ]
 }

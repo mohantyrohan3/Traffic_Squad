@@ -51,6 +51,9 @@
 	<array>
 		<string>Manrope.ttf</string>
 		<string>Montserrat.ttf</string>
+		<string>RobotoSlab-Black.ttf</string>
+		<string>RobotoSlab-Bold.ttf</string>
+		<string>RobotoSlab-ExtraBold.ttf</string>
 	</array>
 </dict>
 </plist>

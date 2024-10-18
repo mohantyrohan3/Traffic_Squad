@@ -12,6 +12,9 @@ import RegisterRoute from './routes/RegisterRoute';
 import PoliceHomeRoute from './routes/PoliceHomeRoute';
 import UserHomeRoute from './routes/UserHomeRoute';
 import ChallanUserRoute from './routes/ChallanUserRoute';
+import FirstScreenRoute from './routes/FirstScreenRoute';
+import PoliceLoginRoute from './routes/PoliceLoginRoute';
+import Logout from './components/Logout/Logout';
 
 const App = () => {
   const Stack = createNativeStackNavigator();
@@ -25,7 +28,9 @@ const App = () => {
         {!auth ?
 
           (<Stack.Navigator>
+            <Stack.Screen name="FirstScreen" component={FirstScreenRoute} options={{ headerShown: false }} />
             <Stack.Screen name="Login" component={LoginRoute} options={{ headerShown: false }} />
+            <Stack.Screen name="PoliceLogin" component={PoliceLoginRoute} options={{ headerShown: false }} />
             <Stack.Screen name="Register" component={RegisterRoute} options={{ headerShown: false }} />
           </Stack.Navigator>)
           :
@@ -33,6 +38,7 @@ const App = () => {
           user === "police" ?
             (<Stack.Navigator>
               <Stack.Screen name="PoliceUser" component={PoliceHomeRoute} options={{ headerShown: false }} />
+              <Stack.Screen name="logout" component={Logout} options={{ headerShown: false }} />
               
             </Stack.Navigator>
             ) :
