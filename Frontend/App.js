@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 // import {
 //   SafeAreaView,
 //   Text,
@@ -15,13 +15,27 @@ import ChallanUserRoute from './routes/ChallanUserRoute';
 import FirstScreenRoute from './routes/FirstScreenRoute';
 import PoliceLoginRoute from './routes/PoliceLoginRoute';
 import Logout from './components/Logout/Logout';
+import { Provider, useDispatch, useSelector } from 'react-redux';
+import store from './store/store';
+import { checkauth } from './store/slices/UserSlice';
 
 const App = () => {
+
+  const dispatch = useDispatch();
+  const User = useSelector(state => state.user);
+  
+  useEffect(() => {
+    dispatch(checkauth());
+    console.log(User);
+  }, [User.status]);
+
+
   const Stack = createNativeStackNavigator();
   const auth = true;
   const user = "user";
 
   return (
+    <Provider store={store}>
     <PaperProvider>
       {/* <Login /> */}
       <NavigationContainer>
@@ -50,6 +64,7 @@ const App = () => {
 
       </NavigationContainer>
     </PaperProvider>
+    </Provider>
   );
 }
 

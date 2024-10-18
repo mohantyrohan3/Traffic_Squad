@@ -149,12 +149,14 @@ router.get('/getAuth',(req,res)=>{
     if(req.isAuthenticated()){
         res.send({
             "message":"User is Authenticated",
-            "user":req.user
+            "user":req.user,
+            "status":"Authenticated"
         });
     }
     else{
         res.status(401).send({
-            "message":"User is not Authenticated"
+            "message":"User is not Authenticated",
+            "status":"Not Authenticated"
         });
     }
 })
