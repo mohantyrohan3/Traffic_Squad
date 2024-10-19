@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 // import {
 //   SafeAreaView,
 //   Text,
@@ -23,23 +23,28 @@ const App = () => {
 
   const dispatch = useDispatch();
   const User = useSelector(state => state.user);
+  const [status , setstatus] = useState(false);
   
   useEffect(() => {
     dispatch(checkauth());
-    console.log(User);
+    console.log("Checked" , User);
+      if(User.status == "Authenticated"){
+        setstatus(true);
+      }
+      else{
+        setstatus(false);
+      }
   }, [User.status]);
 
 
   const Stack = createNativeStackNavigator();
-  const auth = true;
-  const user = "user";
 
   return (
     <Provider store={store}>
     <PaperProvider>
       {/* <Login /> */}
       <NavigationContainer>
-        {!auth ?
+        {!status ?
 
           (<Stack.Navigator>
             <Stack.Screen name="FirstScreen" component={FirstScreenRoute} options={{ headerShown: false }} />
@@ -49,7 +54,7 @@ const App = () => {
           </Stack.Navigator>)
           :
 
-          user === "police" ?
+          User.role === "Police" ?
             (<Stack.Navigator>
               <Stack.Screen name="PoliceUser" component={PoliceHomeRoute} options={{ headerShown: false }} />
               <Stack.Screen name="logout" component={Logout} options={{ headerShown: false }} />

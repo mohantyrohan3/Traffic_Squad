@@ -1,16 +1,41 @@
 import { View, SafeAreaView, StyleSheet, TextInput,ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import { Text , Button} from 'react-native-paper';
+import { LoginUser } from '../../api/LoginUser';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../store/slices/UserSlice';
+
 
 export default function Login({navigation}) {
+
+
+
     const [email , setemail]=useState('');
     const [password , setpassword]=useState('');
+    const dispatch = useDispatch();
+
+    const handleLoginApi = async (data)=>{
+            try{
+                const response =await LoginUser(data);
+                const res = {'user':response.user,'role':'User'};
+                dispatch(setUser(res));
+            }
+            catch(err){
+                console.log(err);
+            }
+    }
 
     const handleLogin=()=>{
         console.log("Email: ",email);
         console.log("Password: ",password);
         setemail('');
         setpassword('');
+
+        handleLoginApi({
+            "email":email,
+            "password":password,
+            "userType":"user"
+        })
     }
 
     return (

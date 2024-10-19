@@ -1,13 +1,29 @@
 import React,{useState} from 'react';
 import { View, SafeAreaView, StyleSheet, TextInput, ScrollView } from 'react-native'
 import { Modal, Portal, Text, Button, PaperProvider } from 'react-native-paper';
+import {IP_ADDRESS} from '@env'
+import { useDispatch } from "react-redux";
+import { removeUser } from '../../store/slices/UserSlice';
 
 const Logout = ({navigation}) => {
     const [modal , setmodal]=useState(true);
-    const handleNo = ()=>{
-        setmodal(false);
-        navigation.navigate('PoliceUser');
+    const dispatch = useDispatch()
+
+    const handleLogout = async ()=>{
+            try{
+                const response = await fetch(`http://${IP_ADDRESS}:8000/auth/logout`, {
+                    method: 'GET',
+                    credentials: 'include',
+                  });
+                  console.log(response);
+                  dispatch(removeUser());
+            }
+            catch(err){
+                console.log(err);
+            }
     }
+
+
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -26,7 +42,7 @@ const Logout = ({navigation}) => {
 
 
                                 <View style={{ alignItems: 'center', marginTop: 20 }}>
-                                    <Button mode="contained" loading={false} dark style={styles.button} onPress={()=>console.log('Heloo')}>
+                                    <Button mode="contained" loading={false} dark style={styles.button} onPress={handleLogout}>
                                         LOGOUT
                                     </Button>
                                 </View>
