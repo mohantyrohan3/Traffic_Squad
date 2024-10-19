@@ -5,15 +5,10 @@ import PoliceUser from '../components/PoliceUser/PoliceUser';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Logout from '../components/Logout/Logout';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useSelector } from 'react-redux';
 
 
 const PoliceHomeRoute = ({navigation}) => {
-    const [loading, setLoading] = useState(true);
-    useEffect(() => {
-        setTimeout(() => {
-            setLoading(false);
-        }, 2000);
-    }, []);
     const Tab = createBottomTabNavigator();
     return (
         <>

@@ -1,6 +1,10 @@
 import { View, SafeAreaView, StyleSheet, TextInput, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import { Text, Button } from 'react-native-paper';
+import { RegisterUser } from '../../api/RegisterUser';
+import { useDispatch } from 'react-redux';
+import { checkauth} from '../../store/slices/UserSlice';
+import { LoginUser } from '../../api/LoginUser';
 
 
 
@@ -11,6 +15,31 @@ const Register = () => {
     const [email, setemail] = useState('');
     const [password, setpassword] = useState('');
     const [dlnumber, setdlnumber] = useState('');
+    const dispatch = useDispatch();
+    
+
+
+    const handleRegisterApi = async (data) =>{
+
+           try{
+
+           const res =  await RegisterUser(data);
+           const res1 = await LoginUser({
+                "email": email,
+                "password": password,
+                "userType": "user"
+           });
+
+            dispatch(checkauth());
+
+           }
+           catch(err){
+                console.log(err);
+           }
+
+    }
+
+
 
     const handleLogin = () => {
         console.log("Email: ", email);
@@ -19,7 +48,11 @@ const Register = () => {
         setemail('');
         setpassword('');
         setdlnumber('');
-
+        handleRegisterApi({
+            "email": email,
+            "password": password,
+            "dlnumber": dlnumber,
+        })
     }
 
 

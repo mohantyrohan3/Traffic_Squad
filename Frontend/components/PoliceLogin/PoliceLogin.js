@@ -2,7 +2,7 @@ import { View, SafeAreaView, StyleSheet, TextInput,ScrollView } from 'react-nati
 import React, { useState } from 'react'
 import { Text , Button} from 'react-native-paper';
 import { useDispatch } from 'react-redux';
-import { setUser } from '../../store/slices/UserSlice';
+import { checkauth, setUser } from '../../store/slices/UserSlice';
 import { LoginPolice } from '../../api/PoliceUser';
 
 export default function PoliceLogin({navigation}) {
@@ -15,7 +15,7 @@ export default function PoliceLogin({navigation}) {
             const response =await LoginPolice(data);
             console.log(response);
             const res = {'user':response.user,'role':'Police'};
-            dispatch(setUser(res));
+            dispatch(checkauth());
         }
         catch(err){
             console.log(err);

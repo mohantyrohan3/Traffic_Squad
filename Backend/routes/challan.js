@@ -74,6 +74,7 @@ router.post('/register_challan',upload.single('file'), async (req,res)=>{
 
 router.get('/get_challan',async (req,res)=>{
     const dl_params = req.query.dl_no;
+    const police_id = req.query.police_id;
     if(req.isAuthenticated() == false){
         return res.status(401).send({
             "message":"Unauthorized Access"
@@ -82,6 +83,13 @@ router.get('/get_challan',async (req,res)=>{
     try{
         if(dl_params){
             const challan = await Challan.find({}).populate('police_id').populate({path:'user_id',match:{dlnumber:dl_params}});
+            return res.send({
+                "message":"Challan Details",
+                "challan":challan
+            });
+        }
+        if(police_id){
+            const challan = await Challan.find().populate({path:'police_id',match:{_id:police_id}}).populate('user_id');
             return res.send({
                 "message":"Challan Details",
                 "challan":challan

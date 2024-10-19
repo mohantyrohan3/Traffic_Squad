@@ -7,38 +7,69 @@ import DocumentPicker, {
     isCancel,
     isInProgress,
     types,
-  } from 'react-native-document-picker'
+} from 'react-native-document-picker'
+import { AddChallanApi } from '../../api/AddChallanApi';
+
 
 const AddChallan = (props) => {
     const [vehicle_no, setvehicleno] = useState('');
     const [dl_no, setdlno] = useState('');
     const [image, setimage] = useState({});
 
+
+    const handleChallanApi = async (data) => {
+        try {
+            const formdata = new FormData();
+            formdata.append('vehicle_no', data.vehicle_no);
+            formdata.append('dl_no', data.dl_no);
+            formdata.append('file', {
+                uri: data.image.uri,
+                type: data.image.type,
+                name: data.image.name
+            });
+            const res = await AddChallanApi (formdata);
+            props.getChallanApi();
+        }
+
+        catch(err){
+            console.log(err);
+        }
+
+    }
+
     const handleNewVehicle = () => {
         console.log("Vehicle Number: ", vehicle_no);
         console.log("DL Number: ", dl_no);
+
+        if (image) {
+            handleChallanApi({
+                "vehicle_no": vehicle_no,
+                "dl_no": dl_no,
+                "image": image
+            })
+        }
+
         setvehicleno('');
         setdlno('');
         setimage({});
         props.onDismiss();
     }
 
-    const handleFileUpload = async ()=>{
+    const handleFileUpload = async () => {
         try {
-           const result = await DocumentPicker.pick({
-            type: [types.images],
-            allowMultiSelection: false,
+            const result = await DocumentPicker.pick({
+                type: [types.images],
+                allowMultiSelection: false,
             });
-            // console.log(result);
             setimage(result[0]);
-          } catch (err) {
+        } catch (err) {
             if (DocumentPicker.isCancel(err)) {
-              console.log('User cancelled the picker')
+                console.log('User cancelled the picker')
             }
-            else{
+            else {
                 console.log(err)
             }
-          }
+        }
     }
 
 
@@ -73,7 +104,7 @@ const AddChallan = (props) => {
                             <Button icon='camera-image' mode="contained" loading={false} dark onPress={handleFileUpload}>
                                 Add Vehicle Image
                             </Button>
-                            <Text style={{color:'black'}}>{image['name']}</Text>
+                            <Text style={{ color: 'black' }}>{image['name']}</Text>
                         </View>
 
 

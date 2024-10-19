@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-// import {
-//   SafeAreaView,
-//   Text,
-//   View,
-// } from 'react-native';
+import {
+  DevSettings
+} from 'react-native';
 import { PaperProvider } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -18,33 +16,39 @@ import Logout from './components/Logout/Logout';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import store from './store/store';
 import { checkauth } from './store/slices/UserSlice';
+import Loading from './components/Loading/Loading';
 
 const App = () => {
 
   const dispatch = useDispatch();
   const User = useSelector(state => state.user);
-  const [status , setstatus] = useState(false);
+  const [loading, setLoading] = useState(true); // New loading state
+
+  const checkAuth = async ()=>{
+      dispatch(checkauth());
+      setLoading(false);
+  }
   
   useEffect(() => {
-    dispatch(checkauth());
-    console.log("Checked" , User);
-      if(User.status == "Authenticated"){
-        setstatus(true);
-      }
-      else{
-        setstatus(false);
-      }
+      checkAuth();
   }, [User.status]);
-
+  
 
   const Stack = createNativeStackNavigator();
 
+  if(loading){
+    return(
+      // <Loading />
+      <></>
+    )
+  }
+
   return (
-    <Provider store={store}>
+
     <PaperProvider>
       {/* <Login /> */}
       <NavigationContainer>
-        {!status ?
+        {User.status == "Not Authenticated" ?
 
           (<Stack.Navigator>
             <Stack.Screen name="FirstScreen" component={FirstScreenRoute} options={{ headerShown: false }} />
@@ -69,7 +73,6 @@ const App = () => {
 
       </NavigationContainer>
     </PaperProvider>
-    </Provider>
   );
 }
 

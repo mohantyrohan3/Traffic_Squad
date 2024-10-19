@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Text , Button} from 'react-native-paper';
 import { LoginUser } from '../../api/LoginUser';
 import { useDispatch } from 'react-redux';
-import { setUser } from '../../store/slices/UserSlice';
+import { checkauth, setUser } from '../../store/slices/UserSlice';
 
 
 export default function Login({navigation}) {
@@ -18,7 +18,7 @@ export default function Login({navigation}) {
             try{
                 const response =await LoginUser(data);
                 const res = {'user':response.user,'role':'User'};
-                dispatch(setUser(res));
+                dispatch(checkauth());
             }
             catch(err){
                 console.log(err);
