@@ -37,7 +37,7 @@ export function checkauth() {
             });
             const data = await response.json();
             
-            console.log(data);
+            console.log("Inside Thunk" , data);
             if (data.status === 'Authenticated') {
                 dispatch(setUser({"user":data.user,"role":data.user.usertype}));
             }

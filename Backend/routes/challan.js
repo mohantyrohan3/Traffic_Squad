@@ -5,6 +5,7 @@ import User from '../models/User.js';
 import multer from 'multer';
 import app from '../config/firebase.js';
 import {getStorage,ref,uploadBytes,getDownloadURL , uploadBytesResumable} from 'firebase/storage';
+import Vehicle from '../models/Vehicle.js';
 
 
 const storage = getStorage();
@@ -73,7 +74,7 @@ router.post('/register_challan',upload.single('file'), async (req,res)=>{
 
 
 router.get('/get_challan',async (req,res)=>{
-    const dl_params = req.query.dl_no;
+    const id = req.query.id;
     const police_id = req.query.police_id;
     if(req.isAuthenticated() == false){
         return res.status(401).send({
@@ -81,11 +82,20 @@ router.get('/get_challan',async (req,res)=>{
         });
     }
     try{
-        if(dl_params){
-            const challan = await Challan.find({}).populate('police_id').populate({path:'user_id',match:{dlnumber:dl_params}});
+        if(id){
+            const challan = await Challan.find({}).populate('police_id').populate({path:'user_id',match:{_id: id}});
+            const response = {
+                challan:[]
+            };
+            for(let i=0; i < challan.length ; i++){
+                if(challan[i].user_id != null){
+                    response['challan'].push(challan[i]);
+                }
+            }
+
             return res.send({
                 "message":"Challan Details",
-                "challan":challan
+                "challan":response.challan
             });
         }
         if(police_id){
@@ -99,6 +109,62 @@ router.get('/get_challan',async (req,res)=>{
         res.send({
             "message":"Challan Details",
             "challan":challan
+        });
+    }
+    catch(err){
+        res.send({
+            "message":err.message
+        });
+    }
+});
+
+
+
+router.post('/add_vehicle' , async (req,res)=>{
+    if(req.isAuthenticated() == false || req.user.usertype != "User"){
+        return res.status(401).send({
+            "message":"Unauthorized Access"
+        });
+    }
+
+
+    const {vehicle_no , owner_name} = req.body;
+
+    try{
+        const vehicle = new Vehicle({
+            user_id:req.user.id,
+            vehicle_no,
+            owner_name
+        });
+
+        await vehicle.save();
+
+        res.send({
+            "message":"Vehicle Added Successfully",
+            "vehicle":vehicle
+        });
+    }
+
+    catch(err){
+        res.send({
+            "message":err.message
+        });
+    }
+})
+
+
+router.get('/get_vehicle',async (req,res)=>{
+    if(req.isAuthenticated() == false || req.user.usertype != "User"){
+        return res.status(401).send({
+            "message":"Unauthorized Access"
+        });
+    }
+
+    try{
+        const vehicle = await Vehicle.find({user_id:req.user.id});
+        res.send({
+            "message":"Vehicle Details",
+            "vehicle":vehicle
         });
     }
     catch(err){

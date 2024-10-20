@@ -2,16 +2,21 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Avatar, Card, IconButton,Button } from 'react-native-paper';
 
-const CardComponent = () => {
+const CardComponent = (props) => {
+
+    const vehicleNo = props.challan.vehicle_no;
+    const dlno = props.challan.user_id.dlnumber;
+    const imageurl = props.challan.image.length > 0 ? props.challan.image[0] : 'https://picsum.photos/700';
+
     return (
-        <View style={{width:'90%'}}>
+        <View style={{width:'90%' , marginVertical:10}}>
 
             <Card>
-                <Card.Cover source={{ uri: 'https://picsum.photos/700' }}  style={{borderBottomRightRadius:0,borderBottomLeftRadius:0}}/>
+                <Card.Cover source={{ uri: imageurl }}  style={{borderBottomRightRadius:0,borderBottomLeftRadius:0}}/>
                 <Card.Title
                         titleNumberOfLines={5}
-                        title="Card Title asdasdasdasdasdsaaaaaaaa"
-                        subtitle="Amount"
+                        title={"DL No : " + dlno}
+                        subtitle="Amount :  ₹ 500"
                         titleStyle={{fontFamily:'Manrope',color:'white',marginVertical:5}}
                         subtitleStyle={{marginTop:5,marginBottom:5 , fontFamily:'Manrope',color:'white'}}
                         subtitleNumberOfLines={5}
@@ -20,7 +25,7 @@ const CardComponent = () => {
                         
                     />
                     <Card.Title
-                        subtitle="Vehicle Number"
+                        subtitle= {"Vehicle No: " + vehicleNo}
                         subtitleStyle={{marginTop:5,marginBottom:5 , fontFamily:'Manrope',color:'white'}}
                         subtitleNumberOfLines={5}
                         left={(props) => <Avatar.Icon {...props} icon="car" />}

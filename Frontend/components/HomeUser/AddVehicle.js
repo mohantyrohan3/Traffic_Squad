@@ -1,46 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import { View, SafeAreaView, StyleSheet, TextInput, ScrollView } from 'react-native'
 import { Modal, Portal, Text, Button, PaperProvider } from 'react-native-paper';
-import DocumentPicker, {
-    DirectoryPickerResponse,
-    DocumentPickerResponse,
-    isCancel,
-    isInProgress,
-    types,
-  } from 'react-native-document-picker'
+import { AddVehicleUser } from '../../api/addVehicleApi';
+
 
 const AddVehicle = (props) => {
     const [vehicle_no, setvehicleno] = useState('');
     const [owner, setowner] = useState('');
-    const [image, setimage] = useState({});
+    
+
+    const AddVehicleApi = async (data) => {
+        try{
+            console.log("Data: ", data);
+            const response = await AddVehicleUser(data);
+            props.handleVehicle();
+        }
+        catch(err){
+            console.log(err);
+        }
+    }
+
 
     const handleNewVehicle = () => {
         console.log("DL Number: ", vehicle_no);
         console.log("Owner Name: ", owner);
+        
+        AddVehicleApi({
+            "vehicle_no": vehicle_no,
+            "owner_name":owner
+        });
+
         setvehicleno('');
         setowner('');
-        setimage({});
         props.onDismiss();
     }
 
-    const handleFileUpload = async ()=>{
-        try {
-           const result = await DocumentPicker.pick({
-            type: [types.images],
-            allowMultiSelection: false,
-            });
-            // console.log(result);
-            setimage(result[0]);
-          } catch (err) {
-            if (DocumentPicker.isCancel(err)) {
-              console.log('User cancelled the picker')
-            }
-            else{
-                console.log(err)
-            }
-          }
-    }
-
+    
 
     return (
         <View style={{}}>
@@ -68,14 +63,6 @@ const AddVehicle = (props) => {
                             placeholderTextColor={'#4F7396'}
                             style={styles.input}
                         />
-
-                        <View style={{ alignItems: 'center', marginTop: 10 }}>
-                            <Button icon='camera-image' mode="contained" loading={false} dark onPress={handleFileUpload}>
-                                Add Vehicle Image
-                            </Button>
-                            <Text style={{color:'black'}}>{image['name']}</Text>
-                        </View>
-
 
                         <View style={{ alignItems: 'center', marginTop: 10 }}>
                             <Button mode="contained" loading={false} dark style={styles.button} onPress={handleNewVehicle}>
